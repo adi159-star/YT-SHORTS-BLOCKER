@@ -8,9 +8,16 @@ const TARGET_SELECTORS = [
   'ytd-rich-grid-media',
   'ytd-rich-shelf-renderer',
   'ytd-reel-shelf-renderer',
-  'ytd-carousel-video-renderer'
+  'ytd-carousel-video-renderer',
+  'ytd-shelf-renderer',
+  'ytd-rich-section-renderer',
+  'ytd-rich-grid-renderer'
 ];
-<<<<<<< HEAD
+const SHORTS_LINK_SELECTORS = [
+  'a[href*="/shorts/"]',
+  'a[href*="shorts/"]',
+  'a[href*="/shorts"]'
+];
 const AD_SELECTORS = [
   'ytd-display-ad-renderer',
   'ytd-promoted-sparkles-text-search-renderer',
@@ -28,18 +35,12 @@ const AD_SELECTORS = [
 ];
 let adsEnabled = true;
 let shortsEnabled = true;
-=======
->>>>>>> a6a2cf61894b634ce339f8541e34096f5e42aecc
 
 function hideElement(el) {
   if (!el || el.hidden) {
     return;
   }
-<<<<<<< HEAD
   el.style.setProperty('display', 'none', 'important');
-=======
-  el.style.display = 'none';
->>>>>>> a6a2cf61894b634ce339f8541e34096f5e42aecc
   el.hidden = true;
 }
 
@@ -47,16 +48,37 @@ function findContainer(el) {
   return el.closest(TARGET_SELECTORS.join(','));
 }
 
-<<<<<<< HEAD
-=======
-function isShortsLink(anchor) {
-  return anchor.href && anchor.href.includes(SHORTS_URL_FRAGMENT);
+function isShortsElement(element) {
+  if (!element) {
+    return false;
+  }
+
+  const text = element.textContent?.toLowerCase() || '';
+  if (text.includes(SHORTS_KEYWORD)) {
+    return true;
+  }
+
+  if (element.querySelector('a[href*="shorts"]')) {
+    return true;
+  }
+
+  const href = element.getAttribute('href') || '';
+  if (href.toLowerCase().includes('shorts')) {
+    return true;
+  }
+
+  return false;
 }
 
->>>>>>> a6a2cf61894b634ce339f8541e34096f5e42aecc
 function hideShortsByAnchor() {
-  document.querySelectorAll('a[href*="/shorts/"]').forEach(anchor => {
-    const container = findContainer(anchor) || anchor.closest('ytd-rich-shelf-renderer') || anchor.closest('ytd-reel-shelf-renderer');
+  document.querySelectorAll(SHORTS_LINK_SELECTORS.join(',')).forEach(anchor => {
+    const container = findContainer(anchor)
+      || anchor.closest('ytd-rich-shelf-renderer')
+      || anchor.closest('ytd-reel-shelf-renderer')
+      || anchor.closest('ytd-rich-section-renderer')
+      || anchor.closest('ytd-rich-grid-media')
+      || anchor.closest('ytd-rich-item-renderer');
+
     if (container) {
       hideElement(container);
     } else {
@@ -66,9 +88,8 @@ function hideShortsByAnchor() {
 }
 
 function hideShortsByText() {
-  document.querySelectorAll('ytd-rich-shelf-renderer, ytd-reel-shelf-renderer, ytd-shelf-renderer, ytd-carousel-video-renderer').forEach(element => {
-    const text = element.textContent?.toLowerCase() || '';
-    if (text.includes(SHORTS_KEYWORD)) {
+  document.querySelectorAll('ytd-rich-shelf-renderer, ytd-reel-shelf-renderer, ytd-shelf-renderer, ytd-carousel-video-renderer, ytd-rich-section-renderer, ytd-rich-grid-media').forEach(element => {
+    if (isShortsElement(element)) {
       hideElement(element);
     }
   });
@@ -76,13 +97,12 @@ function hideShortsByText() {
 
 function hideShortsContainers() {
   document.querySelectorAll(TARGET_SELECTORS.join(',')).forEach(element => {
-    if (element.textContent?.toLowerCase().includes(SHORTS_KEYWORD)) {
+    if (isShortsElement(element)) {
       hideElement(element);
     }
   });
 }
 
-<<<<<<< HEAD
 function hideAds() {
   if (!adsEnabled) {
     return;
@@ -105,16 +125,12 @@ function removeShorts() {
     return;
   }
 
-=======
-function removeShorts() {
->>>>>>> a6a2cf61894b634ce339f8541e34096f5e42aecc
   hideShortsByAnchor();
   hideShortsByText();
   hideShortsContainers();
 }
 
 const observer = new MutationObserver(() => {
-<<<<<<< HEAD
   if (shortsEnabled) {
     removeShorts();
   }
@@ -212,13 +228,6 @@ function initShortsBlocker() {
   if (adsEnabled) {
     hideAds();
   }
-=======
-  removeShorts();
-});
-
-function initShortsBlocker() {
-  removeShorts();
->>>>>>> a6a2cf61894b634ce339f8541e34096f5e42aecc
 
   const root = document.documentElement || document.body;
   if (root) {
@@ -229,7 +238,6 @@ function initShortsBlocker() {
   }
 }
 
-<<<<<<< HEAD
 function onDocumentReady(fn) {
   if (document.readyState !== 'loading') {
     fn();
@@ -242,6 +250,3 @@ onDocumentReady(() => {
   createControlPanel();
   initShortsBlocker();
 });
-=======
-initShortsBlocker();
->>>>>>> a6a2cf61894b634ce339f8541e34096f5e42aecc
