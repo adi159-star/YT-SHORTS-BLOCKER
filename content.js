@@ -10,6 +10,7 @@ const TARGET_SELECTORS = [
   'ytd-reel-shelf-renderer',
   'ytd-carousel-video-renderer'
 ];
+<<<<<<< HEAD
 const AD_SELECTORS = [
   'ytd-display-ad-renderer',
   'ytd-promoted-sparkles-text-search-renderer',
@@ -27,12 +28,18 @@ const AD_SELECTORS = [
 ];
 let adsEnabled = true;
 let shortsEnabled = true;
+=======
+>>>>>>> a6a2cf61894b634ce339f8541e34096f5e42aecc
 
 function hideElement(el) {
   if (!el || el.hidden) {
     return;
   }
+<<<<<<< HEAD
   el.style.setProperty('display', 'none', 'important');
+=======
+  el.style.display = 'none';
+>>>>>>> a6a2cf61894b634ce339f8541e34096f5e42aecc
   el.hidden = true;
 }
 
@@ -40,6 +47,13 @@ function findContainer(el) {
   return el.closest(TARGET_SELECTORS.join(','));
 }
 
+<<<<<<< HEAD
+=======
+function isShortsLink(anchor) {
+  return anchor.href && anchor.href.includes(SHORTS_URL_FRAGMENT);
+}
+
+>>>>>>> a6a2cf61894b634ce339f8541e34096f5e42aecc
 function hideShortsByAnchor() {
   document.querySelectorAll('a[href*="/shorts/"]').forEach(anchor => {
     const container = findContainer(anchor) || anchor.closest('ytd-rich-shelf-renderer') || anchor.closest('ytd-reel-shelf-renderer');
@@ -68,6 +82,7 @@ function hideShortsContainers() {
   });
 }
 
+<<<<<<< HEAD
 function hideAds() {
   if (!adsEnabled) {
     return;
@@ -90,12 +105,16 @@ function removeShorts() {
     return;
   }
 
+=======
+function removeShorts() {
+>>>>>>> a6a2cf61894b634ce339f8541e34096f5e42aecc
   hideShortsByAnchor();
   hideShortsByText();
   hideShortsContainers();
 }
 
 const observer = new MutationObserver(() => {
+<<<<<<< HEAD
   if (shortsEnabled) {
     removeShorts();
   }
@@ -193,6 +212,13 @@ function initShortsBlocker() {
   if (adsEnabled) {
     hideAds();
   }
+=======
+  removeShorts();
+});
+
+function initShortsBlocker() {
+  removeShorts();
+>>>>>>> a6a2cf61894b634ce339f8541e34096f5e42aecc
 
   const root = document.documentElement || document.body;
   if (root) {
@@ -203,6 +229,7 @@ function initShortsBlocker() {
   }
 }
 
+<<<<<<< HEAD
 function onDocumentReady(fn) {
   if (document.readyState !== 'loading') {
     fn();
@@ -215,3 +242,6 @@ onDocumentReady(() => {
   createControlPanel();
   initShortsBlocker();
 });
+=======
+initShortsBlocker();
+>>>>>>> a6a2cf61894b634ce339f8541e34096f5e42aecc

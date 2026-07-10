@@ -17,5 +17,8 @@ A simple Chrome extension that hides YouTube Shorts content on YouTube when the 
 ## Notes
 
 - The extension hides elements that contain `/shorts/` links and sections labeled with `Shorts`.
+<<<<<<< HEAD
 - It adds a floating `Ad Block` toggle button to YouTube pages to turn ad hiding on or off.
+=======
+>>>>>>> a6a2cf61894b634ce339f8541e34096f5e42aecc
 - It works on YouTube pages where content loads dynamically.
